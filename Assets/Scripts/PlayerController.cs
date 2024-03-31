@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // Vector3 moveInput = new Vector3(0f,0f,0f);
         // moveInput.x = Input.GetAxisRaw("Horizontal");
@@ -35,35 +35,52 @@ public class PlayerController : MonoBehaviour
         Vector2 moveInput = new Vector2(0f, 0f);
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
+
+        //blend tree use
+        anim.SetFloat("Horizontal",moveInput.x);
+        anim.SetFloat("Vertical",moveInput.y);
+        anim.SetFloat("Magnitude",moveInput.magnitude);
+
+        //movement
         moveInput.Normalize();
         rb.MovePosition(rb.position + moveInput * moveSpeed * Time.deltaTime);
-        // set bool for moving animation by if condition 
-        if(moveInput != Vector2.zero){
-            if(moveInput.x>0 ||
-            (moveInput.x>0 && Input.GetAxisRaw("Vertical")==1)||
-            (moveInput.x>0 && Input.GetAxisRaw("Vertical")==-1)
-            )
-        {
-            anim.SetBool("isMovingRight",true);
-        }
-            if(moveInput.x<0||
-            (moveInput.x<0 && Input.GetAxisRaw("Vertical")==1)||
-            (moveInput.x<0 && Input.GetAxisRaw("Vertical")==-1)
-            )
-        {
-            anim.SetBool("isMovingLeft",true);
-        }
-            if(Input.GetAxisRaw("Vertical")==1 || Input.GetAxisRaw("Vertical")==-1)
-        {
-            anim.SetBool("isMovingUpDown",true);
-        }
-        }
 
-        else{
-            anim.SetBool("isMovingUpDown",false);
-            anim.SetBool("isMovingLeft",false);
-            anim.SetBool("isMovingRight",false); 
-        }    
+        //blend tree use
+
+
+        // // set bool for moving animation by if condition 
+        // if(moveInput != Vector2.zero){
+        //     if(moveInput.x>0 ||
+        //     (moveInput.x>0 && Input.GetAxisRaw("Vertical")==1)||
+        //     (moveInput.x>0 && Input.GetAxisRaw("Vertical")==-1)
+        //     )
+        // {
+        //     //anim.SetBool("isMovingRight",true);
+        //     //using trigger
+        //     anim.SetTrigger("isMovingRight");
+        // }
+        //     if(moveInput.x<0||
+        //     (moveInput.x<0 && Input.GetAxisRaw("Vertical")==1)||
+        //     (moveInput.x<0 && Input.GetAxisRaw("Vertical")==-1)
+        //     )
+        // {
+        //     //anim.SetBool("isMovingLeft",true);
+        //     anim.SetTrigger("isMovingLeft");
+        // }
+        // //vertical movement animaion
+        //     if(Input.GetAxisRaw("Vertical")==1 || Input.GetAxisRaw("Vertical")==-1)
+        // {
+        //     //anim.SetBool("isMovingUpDown",true);
+        //     anim.SetTrigger("isMovingUpDown");
+        // }
+        // }
+
+        // // else{
+        // //     //using bool to activate animation
+        // //     // anim.SetBool("isMovingUpDown",false);
+        // //     // anim.SetBool("isMovingLeft",false);
+        // //     // anim.SetBool("isMovingRight",false); 
+        // // }    
     }
    
     
