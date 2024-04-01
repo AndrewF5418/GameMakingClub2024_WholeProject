@@ -10,6 +10,7 @@ public class EnemyHealthController : MonoBehaviour
     public static EnemyHealthController instance;
     private Transform target;
     //private Transform enemy;
+    private EnemyNormalController targetValue;
 //slider
     public Slider healthSlider;
 //trait
@@ -25,7 +26,7 @@ public class EnemyHealthController : MonoBehaviour
     {
         target = FindObjectOfType<EnemyNormalController>().transform;//set the position of slider upon the enemy
         //maxHealth = enemy.getHealth();//input the max value of healthslider through getHealth() method written in EnemyNormalController
-        
+        targetValue = FindObjectOfType<EnemyNormalController>();
         currentHealth = maxHealth;
         //set healthbar
         healthSlider.maxValue = maxHealth;
@@ -35,13 +36,14 @@ public class EnemyHealthController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //currentHealth = enemy.getHealth(); //update healthslider through getHealth() method written in EnemyNormalController
+        currentHealth = targetValue.getHealth(); //update healthslider through getHealth() method written in EnemyNormalController
         healthSlider.value = currentHealth;
         if(currentHealth<=0){
+            Destroy(target);
             Destroy(gameObject);
         }
     }
     void LateUpdate(){
-        transform.position = new Vector3(target.position.x,target.position.y+adjustSliderPositionHeight,transform.position.z);
+        transform.position = new Vector3(target.position.x,target.position.y+adjustSliderPositionHeight,0f);
     }
 }

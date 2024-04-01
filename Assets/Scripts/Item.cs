@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other){
         //set player collider box get into the trigger box
-        if(other.gameObject.CompareTag("Player") && other.GetType().ToString() == "UnityEngine.CircleCollider2D")
+        if(other.gameObject.CompareTag("Player"))//&& other.GetType().ToString() == "UnityEngine.CircleCollider2D")
         {
             ItemUI.currentItemQuantity +=1;//pass the update number to the ItemUI script
             Destroy(gameObject);//destroy item itself
