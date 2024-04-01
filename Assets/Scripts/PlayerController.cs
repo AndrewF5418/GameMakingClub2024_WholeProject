@@ -12,7 +12,14 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     //movement
     private Vector2 moveInput = new Vector2(0f, 0f);
-
+    private Vector2 direction;
+    //hold gadget gadget
+    public GameObject[] gadget = new GameObject[4];
+    //blocking layer
+    [SerializeField] public LayerMask dashLayerMask;
+    //skill design bool
+    private bool isDashButtonDown;
+    public float dashAmount=30f;
 
     // Start is called before the first frame update
     
@@ -44,50 +51,38 @@ public class PlayerController : MonoBehaviour
         anim.SetFloat("Horizontal",moveInput.x);
         anim.SetFloat("Vertical",moveInput.y);
         anim.SetFloat("Magnitude",moveInput.magnitude);
+        direction=moveInput.normalized;
+       
+        //Skill Design
+        
+        //detect the player is hold a specific gadget for dash
+        // if(gadget[0]!=null){
+            if(Input.GetKeyDown(KeyCode.LeftShift)){
+                isDashButtonDown=true;
+            }
+        // }
+        
+
 
        
-
-        //blend tree use
-
-
-        // // set bool for moving animation by if condition 
-        // if(moveInput != Vector2.zero){
-        //     if(moveInput.x>0 ||
-        //     (moveInput.x>0 && Input.GetAxisRaw("Vertical")==1)||
-        //     (moveInput.x>0 && Input.GetAxisRaw("Vertical")==-1)
-        //     )
-        // {
-        //     //anim.SetBool("isMovingRight",true);
-        //     //using trigger
-        //     anim.SetTrigger("isMovingRight");
-        // }
-        //     if(moveInput.x<0||
-        //     (moveInput.x<0 && Input.GetAxisRaw("Vertical")==1)||
-        //     (moveInput.x<0 && Input.GetAxisRaw("Vertical")==-1)
-        //     )
-        // {
-        //     //anim.SetBool("isMovingLeft",true);
-        //     anim.SetTrigger("isMovingLeft");
-        // }
-        // //vertical movement animaion
-        //     if(Input.GetAxisRaw("Vertical")==1 || Input.GetAxisRaw("Vertical")==-1)
-        // {
-        //     //anim.SetBool("isMovingUpDown",true);
-        //     anim.SetTrigger("isMovingUpDown");
-        // }
-        // }
-
-        // // else{
-        // //     //using bool to activate animation
-        // //     // anim.SetBool("isMovingUpDown",false);
-        // //     // anim.SetBool("isMovingLeft",false);
-        // //     // anim.SetBool("isMovingRight",false); 
-        // // }    
     }
     void FixedUpdate(){
+       
         //movement
-        moveInput.Normalize();
-        rb.MovePosition(rb.position + moveInput * moveSpeed * Time.deltaTime);
+        rb.velocity=direction* moveSpeed;
+        
+        //skill dash
+        if(isDashButtonDown){
+            Vector2 dashPosition = rb.position+direction*dashAmount;
+            //detect collide
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(rb.position,direction,dashAmount,dashLayerMask);
+            if(raycastHit2D.collider!=null){
+                dashPosition=raycastHit2D.point;
+            }
+            rb.MovePosition(dashPosition);
+            isDashButtonDown=false;
+        }
+
     }
     
 }
