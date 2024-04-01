@@ -10,6 +10,10 @@ public class PlayerController : MonoBehaviour
     public Animator anim;
     //set rigidBody
     private Rigidbody2D rb;
+    //movement
+    private Vector2 moveInput = new Vector2(0f, 0f);
+
+
     // Start is called before the first frame update
     
     void Start()
@@ -24,7 +28,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         // Vector3 moveInput = new Vector3(0f,0f,0f);
         // moveInput.x = Input.GetAxisRaw("Horizontal");
@@ -32,7 +36,7 @@ public class PlayerController : MonoBehaviour
         // moveInput.Normalize();
         //transform.position += moveInput * moveSpeed*Time.deltaTime;
         //use rigidBody to adjust positon instead of transform.position
-        Vector2 moveInput = new Vector2(0f, 0f);
+        
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
 
@@ -41,9 +45,7 @@ public class PlayerController : MonoBehaviour
         anim.SetFloat("Vertical",moveInput.y);
         anim.SetFloat("Magnitude",moveInput.magnitude);
 
-        //movement
-        moveInput.Normalize();
-        rb.MovePosition(rb.position + moveInput * moveSpeed * Time.deltaTime);
+       
 
         //blend tree use
 
@@ -82,6 +84,10 @@ public class PlayerController : MonoBehaviour
         // //     // anim.SetBool("isMovingRight",false); 
         // // }    
     }
-   
+    void FixedUpdate(){
+        //movement
+        moveInput.Normalize();
+        rb.MovePosition(rb.position + moveInput * moveSpeed * Time.deltaTime);
+    }
     
 }
